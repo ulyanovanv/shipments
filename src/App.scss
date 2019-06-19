@@ -1,25 +1,96 @@
+$sidebar-color: #dd006e;
+$light-pink: lighten($sidebar-color, 50%);
+$dark-pink: darken($sidebar-color, 20%);
+$white: #FFFFFF;
+$text-color: #23282d;
+$background-grey: #E8E8E8;
+
+$border-radius: 5px;
+
 .App {
-  text-align: center;
-  max-width: 1200px;
-  margin: 20px auto;
+  text-align: left;
+  color: $text-color;
+  height: 100vh;
+
+  &_sidebar {
+    background-color: $sidebar-color;
+    color: $white;
+
+    &_tab {
+      line-height: 45px;
+      border-radius: $border-radius;
+
+      &:hover {
+        background-color: $dark-pink;
+      }
+    }
+
+    .active {
+      background-color: $dark-pink;
+    }
+  }
+
+  &_main-page {
+    background-color: $background-grey;
+  }
 
   &_table {
-    border: 1px solid grey;
+    color: $text-color;
+    background-color: $white;
+    max-width: 1200px;
+
+    &_shipment {
+      //&:hover {
+      //  background-color: lavender;
+      //}
+
+      img {
+        height: 20px;
+        width: 20px;
+        margin: 2px;
+        padding: 2px;
+      }
+
+      &_tool {
+        height: 30px;
+        width: 30px;
+      }
+
+      &_pencil,
+      &_basket {
+        border-radius: $border-radius;
+        cursor: pointer;
+
+        &:hover {
+          background-color: $light-pink;
+        }
+      }
+    }
+
+    &_sort{
+      &_img {
+        height: 12px;
+        width: 15px;
+        vertical-align: initial;
+      }
+    }
   }
 
   &_navigation {
-    max-width: 200px;
+    max-width: 1200px;
+
+    &_input {
+      max-width: 200px;
+    }
+
+    &_label {
+      background-color: $sidebar-color;
+      color: $white;
+    }
   }
 
   &_active-filter {
-    background-color: #000;
-    color: #FFF;
-  }
-
-  &_table_shipment {
-    &:hover {
-      border: 2px solid grey;
-    }
+    color: $sidebar-color;
   }
 
   &_shipment-details {
@@ -42,14 +113,29 @@
   }
 }
 
-.page-item.active .page-link {
-  background-color: #000;
-  border-color: #000;
+//Pagination, overwrite of bootstrap rules
+.page-item {
+  cursor: pointer;
 
-  &:hover {
-    color: lightgrey;
+  .text-secondary {
+    color: $text-color !important;
+  }
+
+  .page-link:hover {
+    background-color: $light-pink !important;
   }
 }
+
+.page-item.active .page-link {
+  background-color: $dark-pink;
+  cursor: pointer;
+  color: white !important;
+
+  .page-link:hover {
+    background-color: $light-pink !important;
+  }
+}
+
 
 %triangle-preset {
   width: 0;
@@ -58,14 +144,14 @@
   display: inline-block;
 }
 
-.desc {
-  @extend %triangle-preset;
-  border-width: 0 6px 8px 6px;
-  border-color: transparent transparent #ffffff transparent;
-}
-
-.asc {
-  @extend %triangle-preset;
-  border-width: 8px 6px 0 6px;
-  border-color: #ffffff transparent transparent transparent;
-}
+//.desc {
+//  @extend %triangle-preset;
+//  border-width: 0 6px 8px 6px;
+//  border-color: transparent transparent $sidebar-color transparent;
+//}
+//
+//.asc {
+//  @extend %triangle-preset;
+//  border-width: 8px 6px 0 6px;
+//  border-color: $sidebar-color transparent transparent transparent;
+//}

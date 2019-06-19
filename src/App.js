@@ -1,19 +1,17 @@
 import React from 'react';
-import { Provider } from "mobx-react";
 
 import './App.scss';
 import MainPage from './pages/MainPage';
 import ShipmentPage from './pages/ShipmentPage';
-import ShipmentsStore from './store/ShipmentsStore';
-
-const store = new ShipmentsStore();
+import SidebarMenu from "./components/SidebarMenu";
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      isMainPage: true
+      isMainPage: true,
+      activeNavBar: 'all'
     };
 
     this.changePage = this.changePage.bind(this);
@@ -25,16 +23,19 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <Provider store={store}>
-        <div className="App">
-          {this.state.isMainPage && <MainPage
-            changePage={this.changePage}
-          />}
-          {!this.state.isMainPage && <ShipmentPage
-            changePage={this.changePage}
-          />}
+      <div className="container-fluid">
+        <div className="App row">
+          <SidebarMenu active={this.state.activeNavBar}/>
+          <div className="col-10 App_main-page">
+            {this.state.isMainPage && <MainPage
+              changePage={this.changePage}
+            />}
+            {!this.state.isMainPage && <ShipmentPage
+              changePage={this.changePage}
+            />}
+          </div>
         </div>
-      </Provider>
+      </div>
     );
   }
 }

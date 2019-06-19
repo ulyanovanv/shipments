@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {inject, observer} from "mobx-react/index";
 
-import FormToChangeShipmentValue from './components/FormToChangeShipmentValue';
-import ShipmentDetails from './components/ShipmentDetails';
+import FormToChangeShipmentValue from '../components/ShipmentPage/FormToChangeShipmentValue';
+import ShipmentDetails from '../components/ShipmentPage/ShipmentDetails';
 
 class ShipmentPage extends React.Component {
   constructor(props) {

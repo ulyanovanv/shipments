@@ -19,27 +19,21 @@ export default function Pagination(props) {
   };
 
   return (
-    <nav aria-label="Page navigation example">
+    <nav>
       <ul className="pagination justify-content-center">
-        {props.numberOfPages !== 1 &&
-          <li className="page-item">
-            <span className="page-link text-secondary" aria-label="Previous" onClick={() => props.changePageNumber("-")}>
-              <span aria-hidden="true">&laquo;</span>
-            </span>
-          </li>
-        }
-        {props.numberOfPages !== 1 &&
-          <Fragment>
-            {pagination()}
-          </Fragment>
-        }
-        {props.numberOfPages !== 1 &&
-          <li className="page-item">
-            <span className="page-link text-secondary" aria-label="Next" onClick={() => props.changePageNumber("+")}>
-              <span aria-hidden="true">&raquo;</span>
-            </span>
-          </li>
-        }
+        <li className="page-item">
+          <span className="page-link text-secondary" aria-label="Previous" onClick={() => props.changePageNumber("-")}>
+            <span>&laquo;</span>
+          </span>
+        </li>
+        <Fragment>
+          {pagination()}
+        </Fragment>
+        <li className="page-item">
+          <span className="page-link text-secondary" aria-label="Next" onClick={() => props.changePageNumber("+")}>
+            <span>&raquo;</span>
+          </span>
+        </li>
       </ul>
     </nav>
   );

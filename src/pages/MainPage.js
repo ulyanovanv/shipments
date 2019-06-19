@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import {inject, observer} from "mobx-react/index";
 
-import TableOfShipments from './components/TableOfShipments';
-import SearchTool from './components/SearchTool';
-import Pagination from './components/Pagination';
-import {sortByKey, calculateNewPageNumber} from './helpers/helperFunctions';
+import TableOfShipments from '../components/MainPage/TableOfShipments';
+import SearchTool from '../components/MainPage/SearchTool';
+import Pagination from '../components/MainPage/Pagination';
+import {sortByKey, calculateNewPageNumber} from '../helpers/helperFunctions';
 
 const ASC = 'asc';
 const DESC = 'desc';
@@ -130,7 +130,6 @@ class MainPage extends React.Component {
   render() {
     return (
       <Fragment>
-        <h4>List of Shipments.</h4>
         <SearchTool searchById={this.searchById}/>
         <TableOfShipments
           shipments={this.state.shownShipments}
@@ -139,11 +138,13 @@ class MainPage extends React.Component {
           sortDirection={this.state.sortDirection}
           changePage={this.changePage}
         />
-        <Pagination
-          numberOfPages={this.state.numberOfPages}
-          currentPage={this.state.currentPage}
-          changePageNumber={this.changePageNumber}
-        />
+        {this.state.numberOfPages &&
+          <Pagination
+            numberOfPages={this.state.numberOfPages}
+            currentPage={this.state.currentPage}
+            changePageNumber={this.changePageNumber}
+          />
+        }
       </Fragment>
     );
   }

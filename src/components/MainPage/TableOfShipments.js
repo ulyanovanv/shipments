@@ -23,7 +23,7 @@ export default class TableOfShipments extends React.Component {
 
   render() {
     return (
-      <table className="table table-striped table-sm App_table">
+      <table className="table table-sm App_table mx-auto">
         <thead>
           <SortNavigation
             handleSortClick={this.props.handleSortClick}
