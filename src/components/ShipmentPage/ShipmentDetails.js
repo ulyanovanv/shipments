@@ -1,64 +1,83 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
+import {inject, observer} from "mobx-react/index";
+import shortid from 'shortid';
 
-export default function ShipmentDetails(props) {
-  let prepairShipmentsValuesForRender = (shipmentValue) => {
-    let arrayOfJsx = shipmentValue.map((infoPiece, index) => {
-      let shipmentValueDetails = [];
+import Shipment from './Shipment';
 
-      for (let key2 in infoPiece) {
-        shipmentValueDetails.push(
-          <span key={key2}>
-            {`${key2} - ${infoPiece[key2]}`}
-            <br/>
-          </span>
-        );
-      }
+class ShipmentDetails extends React.Component {
+  constructor(props) {
+    super(props);
 
-      return <Fragment key={index + 1}>
-        <i>{index + 1}{'. '}</i>
-        {shipmentValueDetails}
-      </Fragment>;
-    });
+    this.state = {
+      key: '',
+      newValueForShipmentUpdate: '',
+    };
 
-    return arrayOfJsx;
-  };
-
-  let arrayOfInfo = [];
-  let shipmentDetails = props.shipmentDetails;
-
-  for (let key in shipmentDetails) {
-    let changeableField = key === "name";
-    let shipmentValue = shipmentDetails[key];
-
-    if (typeof shipmentValue === 'object') {
-      shipmentValue = prepairShipmentsValuesForRender(shipmentValue);
-    }
-
-    arrayOfInfo.push(
-      <div className="d-flex flex-row">
-        <div className="App_shipment-details_key px-1">
-          {key}
-        </div>
-        <div className="App_shipment-details_value px-1">
-          {shipmentValue}
-          {changeableField && <input
-            type="button"
-            className="btn btn-outline-secondary btn-sm float-right"
-            value="change"
-            onClick={() => props.showFormForValueChange(key)}
-          />}
-        </div>
-      </div>
-    )
+    this.showFormForValueChange = this.showFormForValueChange.bind(this);
+    this.updateShipmentValue = this.updateShipmentValue.bind(this);
+    this.submitFormForNewShipmentValue = this.submitFormForNewShipmentValue.bind(this);
   }
 
-  return (
-    <div className="App_shipment-details d-flex flex-column mx-auto p-3 text-left bg-light">
-      {arrayOfInfo}
-    </div>
-  );
+  showFormForValueChange(key) {
+    this.setState({key: key});
+  }
+
+  updateShipmentValue(event) {
+    this.setState({newValueForShipmentUpdate: event.target.value});
+  }
+
+  submitFormForNewShipmentValue(event) {
+    event.preventDefault();
+    this.props.store.modifyShipments(
+      this.findCurrentShipmentInArray().id,
+      this.state.key,
+      this.state.newValueForShipmentUpdate,
+    );
+
+    this.setState({
+      key: '',
+      newValueForShipmentUpdate: ''
+    });
+  }
+
+  findCurrentShipmentInArray() {
+    return this.props.store.shipments.find(obj => obj.id === this.props.store.shipmentDetailsId);
+  }
+
+  render() {
+    let arrayOfInfo = [];
+    let shipmentDetails = this.props.shipmentDetails;
+
+    for (let key in shipmentDetails) {
+      arrayOfInfo.push(
+        <Shipment
+          key = {shortid.generate()}
+          keyValue = {key}
+          shouldFormBeShown = {key === this.state.key}
+          shipmentValue={shipmentDetails[key]}
+          showFormForValueChange={this.showFormForValueChange}
+          updateShipmentValue={this.updateShipmentValue}
+          submitFormForNewShipmentValue={this.submitFormForNewShipmentValue}
+        />
+      )
+    }
+
+    return (
+      <div className="App_shipment-details d-flex flex-column mx-auto p-3 text-left bg-light">
+        {arrayOfInfo}
+      </div>
+    );
+  }
 }
+
+ShipmentDetails = inject("store")(
+  observer(
+    ShipmentDetails
+  )
+);
+
+export default ShipmentDetails;
 
 ShipmentDetails.propTypes = {
   showFormForValueChange: PropTypes.func,

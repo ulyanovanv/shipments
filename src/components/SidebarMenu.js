@@ -1,14 +1,7 @@
 import React from 'react';
 
 export default class SidebarMenu extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-    console.log(this.props.active);
-    let active = this.props.active === "all" ? 'active' : '';
-
     return (
       <aside className="App_sidebar p-3 col-2 d-flex flex-column">
         <h4 className="float-left">List of Shipments.</h4>

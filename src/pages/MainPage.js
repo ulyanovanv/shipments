@@ -31,12 +31,16 @@ class MainPage extends React.Component {
     this.sortByField = this.sortByField.bind(this);
     this.handleSortClick = this.handleSortClick.bind(this);
     this.changePage = this.changePage.bind(this);
+    this.deleteShipment = this.deleteShipment.bind(this);
   }
 
   componentDidMount() {
     if (this.props.store.shipments.length) {
-      this.setState({numberOfPages: this.calculateNumberOfPages(this.props.store.shipments)});
+      this.setState(
+        {numberOfPages: this.calculateNumberOfPages(this.props.store.shipments)}
+      );
       this.sortByField(this.state.sortCategory, this.state.sortDirection);
+
       return;
     }
 
@@ -44,7 +48,7 @@ class MainPage extends React.Component {
     axios.get('http://localhost:3004/shipments')
       .then(function (response) {
         thisApp.setState({
-          shownShipments: response.data, //bad practice to have loaded and changing shipments' list under one name
+          shownShipments: response.data,
           numberOfPages: thisApp.calculateNumberOfPages(response.data)
         });
 
@@ -100,7 +104,9 @@ class MainPage extends React.Component {
   showShipmentsOfCurrentPage(shipments, page) {
     let serialNumberOfFirstShipment = SHIPMENTS_PER_PAGE * (page - 1);
 
-    this.setState({shownShipments: shipments.slice(serialNumberOfFirstShipment, serialNumberOfFirstShipment + SHIPMENTS_PER_PAGE)});
+    this.setState({
+      shownShipments: shipments.slice(serialNumberOfFirstShipment, serialNumberOfFirstShipment + SHIPMENTS_PER_PAGE)
+    });
   }
 
   filterShipments(shipments, searchId) {
@@ -127,6 +133,16 @@ class MainPage extends React.Component {
     this.props.changePage();
   }
 
+  deleteShipment(id) {
+    let arrayAfterDeletion = this.props.store.deleteShipment(id);
+    this.setState({
+      shownShipments: arrayAfterDeletion,
+      numberOfPages: this.calculateNumberOfPages(arrayAfterDeletion)
+    });
+
+    this.sortByField(this.state.sortCategory, this.state.sortDirection);
+  }
+
   render() {
     return (
       <Fragment>
@@ -137,8 +153,9 @@ class MainPage extends React.Component {
           sortCategory={this.state.sortCategory}
           sortDirection={this.state.sortDirection}
           changePage={this.changePage}
+          deleteShipment={this.deleteShipment}
         />
-        {this.state.numberOfPages &&
+        {this.state.numberOfPages > 1 &&
           <Pagination
             numberOfPages={this.state.numberOfPages}
             currentPage={this.state.currentPage}

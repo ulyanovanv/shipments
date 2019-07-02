@@ -1,38 +1,65 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {inject, observer} from "mobx-react/index";
 
 import pencil from '../../images/pencil.png';
 import basket from '../../images/basket.png'
 
-export default function LineOfShipment(props) {
-  return (
-    <tr className="App_table_shipment">
-      <th className="p-2">{props.info.id}</th>
-      <td>{props.info.name}</td>
-      <td>{props.info.mode}</td>
-      <td>{props.info.type}</td>
-      <td>{props.info.origin}</td>
-      <td>{props.info.destination}</td>
-      <td>{props.info.status}</td>
-      <td className="App_table_shipment_tool">
-        <div
-          onClick={() => props.changePage(props.info.id)}
-          className="App_table_shipment_pencil"
-        >
-          <img src={pencil} />
-        </div>
-      </td>
-      <td className="App_table_shipment_tool">
-        <div
-          onClick={() => {}}
-          className="App_table_shipment_basket"
-        >
-          <img src={basket} />
-        </div>
-      </td>
-    </tr>
-  );
+const COLORS = {
+  ordered: '#fc79ba',
+  paid: '#dd006e',
+  enroute: '#a80556',
+  delivered: '#57002b'
+};
+
+class LineOfShipment extends React.Component {
+  render() {
+    let props = this.props.info;
+    return (
+      <tr className="App_table_shipment">
+        <th className="p-2">{props.id}</th>
+        <td>{props.name}</td>
+        <td>{props.mode}</td>
+        <td>{props.type}</td>
+        <td>{props.origin}</td>
+        <td>{props.destination}</td>
+        <td className='position-relative'>
+          <div
+            className="App_table_shipment_status"
+            style={{backgroundColor: COLORS[props.status]}}
+          > </div>
+          <span className='ml-2'>
+            {props.status.toUpperCase()}
+          </span>
+        </td>
+        <td className="tool">
+          <div
+            onClick={() => this.props.changePage(props.id)}
+            className="pencil"
+          >
+            <img src={pencil} />
+          </div>
+        </td>
+        <td className="tool">
+          <div
+            onClick={() => this.props.deleteShipment(props.id)}
+            className="basket"
+          >
+            <img src={basket} />
+          </div>
+        </td>
+      </tr>
+    );
+  }
 }
+
+LineOfShipment = inject("store")(
+  observer(
+    LineOfShipment
+  )
+);
+
+export default LineOfShipment;
 
 LineOfShipment.propTypes = {
   info: PropTypes.object,

@@ -21,7 +21,7 @@ export default function SortNavigation(props) {
     <tr>
       {tableHeaders.map(el => {
         if (el.length === 0) {
-          return <th></th>;
+          return <th key={shortid.generate()}></th>;
         }
 
         return (

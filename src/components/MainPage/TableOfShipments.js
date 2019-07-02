@@ -1,11 +1,12 @@
 import React from 'react';
 import shortid from 'shortid';
 import PropTypes from 'prop-types';
+import {inject, observer} from "mobx-react/index";
 
 import LineOfShipment from './LineOfShipment';
 import SortNavigation from './SortNavigation';
 
-export default class TableOfShipments extends React.Component {
+class TableOfShipments extends React.Component {
   constructor(props) {
     super(props);
 
@@ -18,6 +19,7 @@ export default class TableOfShipments extends React.Component {
         info={el}
         key={shortid.generate()}
         changePage={this.props.changePage}
+        deleteShipment={this.props.deleteShipment}
       />)
   }
 
@@ -38,6 +40,14 @@ export default class TableOfShipments extends React.Component {
     );
   }
 }
+
+TableOfShipments = inject("store")(
+  observer(
+    TableOfShipments
+  )
+);
+
+export default TableOfShipments;
 
 TableOfShipments.propTypes = {
   shipments: PropTypes.array,

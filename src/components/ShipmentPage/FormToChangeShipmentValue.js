@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 
 export default function FormToChangeShipmentValue(props) {
   return (
-    <form className="form-inline">
-      <div className="form-group mx-sm-3 mb-2">
+    <form className="form-inline App_shipment-details_form">
+      <div className="form-group mr-3 mb-2">
         <label htmlFor="inputPassword2" className="sr-only">New Value for {props.fieldToChange}</label>
         <input
           type="text"
@@ -17,7 +17,7 @@ export default function FormToChangeShipmentValue(props) {
       </div>
       <button
         type="submit"
-        className="btn btn-secondary btn-sm mb-2"
+        className="btn-customized mb-2 ml-auto"
         onClick={(event) => props.submitFormForNewShipmentValue(event)}
       >
         Save
