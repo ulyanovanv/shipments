@@ -52,6 +52,8 @@ export default TableOfShipments;
 TableOfShipments.propTypes = {
   shipments: PropTypes.array,
   handleSortClick: PropTypes.func,
+  changePage: PropTypes.func,
+  deleteShipment: PropTypes.func,
   sortCategory: PropTypes.string,
-  sortDirection: PropTypes.string,
+  sortDirection: PropTypes.string
 };

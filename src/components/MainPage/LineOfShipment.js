@@ -12,45 +12,44 @@ const COLORS = {
   delivered: '#57002b'
 };
 
-class LineOfShipment extends React.Component {
-  render() {
-    let props = this.props.info;
-    return (
-      <tr className="App_table_shipment">
-        <th className="p-2">{props.id}</th>
-        <td>{props.name}</td>
-        <td>{props.mode}</td>
-        <td>{props.type}</td>
-        <td>{props.origin}</td>
-        <td>{props.destination}</td>
-        <td className='position-relative'>
-          <div
-            className="App_table_shipment_status"
-            style={{backgroundColor: COLORS[props.status]}}
-          > </div>
-          <span className='ml-2'>
-            {props.status.toUpperCase()}
-          </span>
-        </td>
-        <td className="tool">
-          <div
-            onClick={() => this.props.changePage(props.id)}
-            className="pencil"
-          >
-            <img src={pencil} />
-          </div>
-        </td>
-        <td className="tool">
-          <div
-            onClick={() => this.props.deleteShipment(props.id)}
-            className="basket"
-          >
-            <img src={basket} />
-          </div>
-        </td>
-      </tr>
-    );
-  }
+function LineOfShipment(props) {
+  let info = props.info;
+
+  return (
+    <tr className="App_table_shipment">
+      <th className="p-2">{info.id}</th>
+      <td>{info.name}</td>
+      <td>{info.mode}</td>
+      <td>{info.type}</td>
+      <td>{info.origin}</td>
+      <td>{info.destination}</td>
+      <td className='position-relative'>
+        <div
+          className="App_table_shipment_status"
+          style={{backgroundColor: COLORS[info.status]}}
+        > </div>
+        <span className='ml-2'>
+          {info.status.toUpperCase()}
+        </span>
+      </td>
+      <td className="tool">
+        <div
+          onClick={() => props.changePage('shipment', info.id)}
+          className="pencil"
+        >
+          <img src={pencil} />
+        </div>
+      </td>
+      <td className="tool">
+        <div
+          onClick={() => props.deleteShipment(info.id)}
+          className="basket"
+        >
+          <img src={basket} />
+        </div>
+      </td>
+    </tr>
+  );
 }
 
 LineOfShipment = inject("store")(
@@ -63,4 +62,6 @@ export default LineOfShipment;
 
 LineOfShipment.propTypes = {
   info: PropTypes.object,
+  changePage: PropTypes.func,
+  deleteShipment: PropTypes.func
 };

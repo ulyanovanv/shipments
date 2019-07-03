@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import pencil from '../../images/pencil.png';
 import FormToChangeShipmentValue from './FormToChangeShipmentValue';
 
-export default class ShipmentDetails extends React.Component {
+export default class Shipment extends React.Component {
   prepairShipmentsValuesForRender(shipmentValue) {
     let arrayOfJsx = shipmentValue.map((infoPiece, index) => {
       let shipmentValueDetails = [];
@@ -31,7 +31,8 @@ export default class ShipmentDetails extends React.Component {
   }
 
   render() {
-    let shipmentValue = this.props.shipmentValue;
+    let {props} = this;
+    let shipmentValue = props.shipmentValue;
 
     if (typeof shipmentValue === 'object') {
       shipmentValue = this.prepairShipmentsValuesForRender(shipmentValue);
@@ -40,20 +41,23 @@ export default class ShipmentDetails extends React.Component {
     return (
       <div className="d-flex flex-row mb-1">
         <div className="App_shipment-details_key px-1">
-          {this.props.keyValue}
+          {props.keyValue}
         </div>
-        <div className="App_shipment-details_value px-1">
-          {!this.props.shouldFormBeShown && shipmentValue}
 
-          {(!this.props.shouldFormBeShown && this.props.keyValue !== 'id') && <div
+        <div className="App_shipment-details_value px-1">
+          {!props.shouldFormBeShown && shipmentValue}
+
+          {(!props.shouldFormBeShown && props.keyValue !== 'id') && <div
             className="float-right pencil"
-            onClick={() => this.props.showFormForValueChange(this.props.keyValue)}>
+            onClick={() => props.showFormForValueChange(props.keyValue)}>
             <img src={pencil}/>
           </div>}
 
-          {this.props.shouldFormBeShown && <FormToChangeShipmentValue
-            updateShipmentValue={this.props.updateShipmentValue}
-            submitFormForNewShipmentValue={this.props.submitFormForNewShipmentValue}
+          {props.shouldFormBeShown && <FormToChangeShipmentValue
+            newValueForShipmentUpdate = {props.newValueForShipmentUpdate}
+            keyValue={props.keyValue}
+            updateShipmentValue={props.updateShipmentValue}
+            submitFormForNewShipmentValue={props.submitFormForNewShipmentValue}
           />}
         </div>
       </div>
@@ -61,3 +65,12 @@ export default class ShipmentDetails extends React.Component {
   }
 }
 
+Shipment.propTypes = {
+  shipmentValue: PropTypes.string,
+  keyValue: PropTypes.string,
+  shouldFormBeShown: PropTypes.bool,
+  showFormForValueChange: PropTypes.func,
+  newValueForShipmentUpdate: PropTypes.string,
+  updateShipmentValue: PropTypes.func,
+  submitFormForNewShipmentValue: PropTypes.func,
+};

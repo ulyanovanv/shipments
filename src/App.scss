@@ -85,7 +85,7 @@ $border-radius: 5px;
   }
 
   &_shipment-details {
-    border-radius: 5px;
+    border-radius: $border-radius;
 
     &_key {
       width: 20%;
@@ -101,11 +101,6 @@ $border-radius: 5px;
         margin: 2px;
         padding: 2px;
       }
-
-      //&:hover {
-      //  background-color: $light-pink;
-      //  border-radius: 5px;
-      //}
     }
 
     &_form {
@@ -159,7 +154,7 @@ $border-radius: 5px;
   background-color: $background-light;
   border: 1px solid $sidebar-color;
   color: $sidebar-color;
-  border-radius: 5px;
+  border-radius: $border-radius;
 
   &:hover {
     background-color: $dark-pink;
@@ -167,11 +162,3 @@ $border-radius: 5px;
     color: $background-light;
   }
 }
-
-%triangle-preset {
-  width: 0;
-  height: 0;
-  border-style: solid;
-  display: inline-block;
-}
-

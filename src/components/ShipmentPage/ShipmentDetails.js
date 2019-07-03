@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {inject, observer} from "mobx-react/index";
-import shortid from 'shortid';
 
 import Shipment from './Shipment';
 
@@ -24,6 +23,7 @@ class ShipmentDetails extends React.Component {
   }
 
   updateShipmentValue(event) {
+    console.log(event.target.value);
     this.setState({newValueForShipmentUpdate: event.target.value});
   }
 
@@ -52,9 +52,10 @@ class ShipmentDetails extends React.Component {
     for (let key in shipmentDetails) {
       arrayOfInfo.push(
         <Shipment
-          key = {shortid.generate()}
+          key = {key}
           keyValue = {key}
           shouldFormBeShown = {key === this.state.key}
+          newValueForShipmentUpdate = {this.state.newValueForShipmentUpdate}
           shipmentValue={shipmentDetails[key]}
           showFormForValueChange={this.showFormForValueChange}
           updateShipmentValue={this.updateShipmentValue}

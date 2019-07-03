@@ -1,6 +1,7 @@
 function sortByKey(array, key) {
   return array.sort(function(a, b) {
-    var x = a[key]; var y = b[key];
+    let x = a[key];
+    let y = b[key];
     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
   });
 }
@@ -30,4 +31,8 @@ function calculateNewPageNumber(operator, currentPage, numberOfPages) {
   return nextPage;
 }
 
-export {sortByKey, calculateNewPageNumber};
+function calculateNumberOfPages(shipments = [], shipmentsPerPage) {
+  return Math.ceil(shipments.length / shipmentsPerPage);
+}
+
+export { sortByKey, calculateNewPageNumber, calculateNumberOfPages };

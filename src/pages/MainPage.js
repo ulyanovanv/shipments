@@ -6,7 +6,7 @@ import {inject, observer} from "mobx-react/index";
 import TableOfShipments from '../components/MainPage/TableOfShipments';
 import SearchTool from '../components/MainPage/SearchTool';
 import Pagination from '../components/MainPage/Pagination';
-import {sortByKey, calculateNewPageNumber} from '../helpers/helperFunctions';
+import {sortByKey, calculateNewPageNumber, calculateNumberOfPages} from '../helpers/helperFunctions';
 
 const ASC = 'asc';
 const DESC = 'desc';
@@ -37,7 +37,7 @@ class MainPage extends React.Component {
   componentDidMount() {
     if (this.props.store.shipments.length) {
       this.setState(
-        {numberOfPages: this.calculateNumberOfPages(this.props.store.shipments)}
+        {numberOfPages: calculateNumberOfPages(this.props.store.shipments, SHIPMENTS_PER_PAGE)}
       );
       this.sortByField(this.state.sortCategory, this.state.sortDirection);
 
@@ -49,7 +49,7 @@ class MainPage extends React.Component {
       .then(function (response) {
         thisApp.setState({
           shownShipments: response.data,
-          numberOfPages: thisApp.calculateNumberOfPages(response.data)
+          numberOfPages: calculateNumberOfPages(response.data, SHIPMENTS_PER_PAGE)
         });
 
         thisApp.props.store.setShipments(response.data);
@@ -60,14 +60,12 @@ class MainPage extends React.Component {
       });
   }
 
-  calculateNumberOfPages(shipments = []) {
-    return Math.ceil(shipments.length / SHIPMENTS_PER_PAGE);
-  }
-
   changePageNumber(operator) {
     let nextPage = calculateNewPageNumber(operator, this.state.currentPage, this.state.numberOfPages);
 
-    this.setState({currentPage: nextPage});
+    this.setState({
+      currentPage: nextPage
+    });
     this.sortByField(this.state.sortCategory, this.state.sortDirection, nextPage);
   }
 
@@ -80,7 +78,10 @@ class MainPage extends React.Component {
     }
 
     this.sortByField(sortCategory, sortDirection);
-    this.setState({sortCategory: sortCategory, sortDirection: sortDirection});
+    this.setState({
+      sortCategory: sortCategory,
+      sortDirection: sortDirection
+    });
   }
 
   sortByField(sortCategory, sortDirection, page = this.state.currentPage) {
@@ -122,22 +123,22 @@ class MainPage extends React.Component {
 
     this.setState({
       shownShipments: filteredShipments,
-      numberOfPages: this.calculateNumberOfPages(filteredShipments),
+      numberOfPages: calculateNumberOfPages(filteredShipments, SHIPMENTS_PER_PAGE),
       searchId: event.target.value,
       currentPage: 1,
     });
   }
 
-  changePage(id) {
+  changePage(page, id) {
     this.props.store.setSelectedShipmentId(id);
-    this.props.changePage();
+    this.props.changePage(page);
   }
 
   deleteShipment(id) {
     let arrayAfterDeletion = this.props.store.deleteShipment(id);
     this.setState({
       shownShipments: arrayAfterDeletion,
-      numberOfPages: this.calculateNumberOfPages(arrayAfterDeletion)
+      numberOfPages: calculateNumberOfPages(arrayAfterDeletion, SHIPMENTS_PER_PAGE)
     });
 
     this.sortByField(this.state.sortCategory, this.state.sortDirection);
@@ -177,4 +178,10 @@ export default MainPage;
 
 MainPage.propTypes = {
   changePage: PropTypes.func,
+  store: PropTypes.shape({
+    shipments: PropTypes.array,
+    setShipments: PropTypes.func,
+    setSelectedShipmentId: PropTypes.func,
+    deleteShipment: PropTypes.func
+  })
 };

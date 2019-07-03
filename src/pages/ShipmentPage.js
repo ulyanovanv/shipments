@@ -24,8 +24,8 @@ class ShipmentPage extends React.Component {
         />
         <button
           type="button"
-          className="btn btn-sm btn-customized mt-2 font-weight-bold"
-          onClick={() => this.props.changePage()}
+          className="btn btn-sm btn-customized my-2 font-weight-bold"
+          onClick={() => this.props.changePage('all')}
         >
           Back to Main Page
         </button>
@@ -44,5 +44,9 @@ export default ShipmentPage;
 
 ShipmentPage.propTypes = {
   changePage: PropTypes.func,
+  store: PropTypes.shape({
+    shipments: PropTypes.array,
+    shipmentDetailsId: PropTypes.string
+  })
 };
 

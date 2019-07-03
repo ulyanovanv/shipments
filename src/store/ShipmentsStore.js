@@ -44,11 +44,12 @@ class ShipmentsStore {
 
 decorate(ShipmentsStore, {
   shipments: observable,
-  modifyShipments: action,
-  setShipments: action,
   shipmentDetailsId: observable,
+  deletedShipments: observable,
+  modifyShipments: action,
+  deleteShipment: action,
+  setShipments: action,
   setSelectedShipmentId: action,
-  deleteShipment: action
 });
 
 export default ShipmentsStore;
