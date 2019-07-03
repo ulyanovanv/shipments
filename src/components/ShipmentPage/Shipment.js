@@ -6,7 +6,7 @@ import FormToChangeShipmentValue from './FormToChangeShipmentValue';
 
 export default class Shipment extends React.Component {
   prepairShipmentsValuesForRender(shipmentValue) {
-    let arrayOfJsx = shipmentValue.map((infoPiece, index) => {
+    return shipmentValue.map((infoPiece, index) => {
       let shipmentValueDetails = [];
 
       let entries =  Object.entries(infoPiece);
@@ -26,8 +26,6 @@ export default class Shipment extends React.Component {
         <br/>
       </Fragment>;
     });
-
-    return arrayOfJsx;
   }
 
   render() {

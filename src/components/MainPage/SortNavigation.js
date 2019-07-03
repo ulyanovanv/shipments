@@ -25,7 +25,7 @@ export default function SortNavigation(props) {
         }
 
         return (
-          <th className="pl-2"
+          <th className="pl-2 App_table_head-item"
               scope="col"
               onClick={() => props.handleSortClick(el)}
               key={shortid.generate()}

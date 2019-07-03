@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {inject, observer} from "mobx-react/index";
 
 import pencil from '../../images/pencil.png';
 import basket from '../../images/basket.png'
@@ -12,7 +11,7 @@ const COLORS = {
   delivered: '#57002b'
 };
 
-function LineOfShipment(props) {
+export default function LineOfShipment(props) {
   let info = props.info;
 
   return (
@@ -34,7 +33,7 @@ function LineOfShipment(props) {
       </td>
       <td className="tool">
         <div
-          onClick={() => props.changePage('shipment', info.id)}
+          onClick={() => props.goToShipmentPage('shipment', info.id)}
           className="pencil"
         >
           <img src={pencil} />
@@ -52,13 +51,6 @@ function LineOfShipment(props) {
   );
 }
 
-LineOfShipment = inject("store")(
-  observer(
-    LineOfShipment
-  )
-);
-
-export default LineOfShipment;
 
 LineOfShipment.propTypes = {
   info: PropTypes.object,

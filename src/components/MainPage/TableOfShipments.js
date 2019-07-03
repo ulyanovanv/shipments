@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import {inject, observer} from "mobx-react/index";
 
 import LineOfShipment from './LineOfShipment';
+import LineOfDeletedShipment from './LineOfDeletedShipment';
 import SortNavigation from './SortNavigation';
 
 class TableOfShipments extends React.Component {
@@ -14,13 +15,20 @@ class TableOfShipments extends React.Component {
   }
 
   renderShipments() {
-    return this.props.shipments.map(el =>
-      <LineOfShipment
-        info={el}
-        key={shortid.generate()}
-        changePage={this.props.changePage}
-        deleteShipment={this.props.deleteShipment}
-      />)
+    let tableLineComponent =
+      this.props.tableLineComponent === 'LineOfShipment' ? LineOfShipment : LineOfDeletedShipment;
+
+    return this.props.shipments.map(el => {
+      return React.createElement(
+          tableLineComponent,
+          {
+            info: el,
+            key: shortid.generate(),
+            goToShipmentPage: this.props.goToShipmentPage,
+            deleteShipment: this.props.deleteShipment
+          }
+      );
+    });
   }
 
   render() {

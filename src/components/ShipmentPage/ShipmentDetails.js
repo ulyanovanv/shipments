@@ -23,7 +23,6 @@ class ShipmentDetails extends React.Component {
   }
 
   updateShipmentValue(event) {
-    console.log(event.target.value);
     this.setState({newValueForShipmentUpdate: event.target.value});
   }
 

@@ -39,6 +39,11 @@ $border-radius: 5px;
     color: $text-color;
     background-color: $white;
     max-width: 1200px;
+    border-radius: $border-radius;
+
+    &_head-item {
+      cursor: pointer;
+    }
 
     &_shipment {
       img {
@@ -69,6 +74,10 @@ $border-radius: 5px;
 
   &_navigation {
     max-width: 1200px;
+
+    &_nav {
+      margin-left: 75px;
+    }
 
     &_input {
       max-width: 200px;
@@ -128,6 +137,7 @@ $border-radius: 5px;
   background-color: $dark-pink;
   cursor: pointer;
   color: white !important;
+  border: 1px solid transparent;
 
   .page-link:hover {
     background-color: $light-pink !important;

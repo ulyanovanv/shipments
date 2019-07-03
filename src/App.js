@@ -19,7 +19,10 @@ export default class App extends React.Component {
   }
 
   changePage(page) {
-    this.setState({openPage: page});
+    this.setState({
+      openPage: page,
+      activeNavBar: page === 'shipment' ? 'all' : page
+    });
   }
 
   render() {

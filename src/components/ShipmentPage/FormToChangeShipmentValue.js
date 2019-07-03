@@ -25,7 +25,10 @@ class FormToChangeShipmentValue extends React.Component {
     let input = (this.props.keyValue === 'status') ? selectElement : inputElement;
 
     return (
-      <form className="form-inline App_shipment-details_form">
+      <form
+        className="form-inline App_shipment-details_form"
+        onBlur={(event) => this.props.submitFormForNewShipmentValue(event)}
+      >
         <div className="form-group mr-3 mb-2">
           <label htmlFor="inputPassword2" className="sr-only">New Value for {this.props.keyValue}</label>
           { input }

@@ -27,7 +27,7 @@ class ShipmentPage extends React.Component {
           className="btn btn-sm btn-customized my-2 font-weight-bold"
           onClick={() => this.props.changePage('all')}
         >
-          Back to Main Page
+          Back to All Shipments
         </button>
       </Fragment>
     );
