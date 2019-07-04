@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function LineOfDeletedShipment(props) {
-  let info = props.info;
+  const { info } = props;
 
   return (
     <tr className="App_table_shipment">
@@ -12,12 +12,12 @@ export default function LineOfDeletedShipment(props) {
       <td>{info.type}</td>
       <td>{info.origin}</td>
       <td>{info.destination}</td>
-      <td className='position-relative'>
+      <td className="position-relative">
         <div
           className="App_table_shipment_status"
-          style={{backgroundColor: '#000'}}
-        > </div>
-        <span className='ml-2'>
+          style={{ backgroundColor: '#000' }}
+        />
+        <span className="ml-2">
           {'deleted'.toUpperCase()}
         </span>
       </td>
@@ -27,7 +27,12 @@ export default function LineOfDeletedShipment(props) {
 }
 
 LineOfDeletedShipment.propTypes = {
-  info: PropTypes.object,
-  changePage: PropTypes.func,
-  deleteShipment: PropTypes.func
+  info: PropTypes.shape({
+    name: PropTypes.string,
+    mode: PropTypes.string,
+    type: PropTypes.string,
+    origin: PropTypes.string,
+    destination: PropTypes.string,
+    id: PropTypes.string,
+  }),
 };

@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import {inject, observer} from "mobx-react/index";
+import { inject, observer } from 'mobx-react/index';
 
-import TableOfShipments from '../components/MainPage/TableOfShipments';
-import SearchTool from '../components/MainPage/SearchTool';
-import Pagination from '../components/MainPage/Pagination';
-import {sortByKey, calculateNewPageNumber, calculateNumberOfPages} from '../helpers/helperFunctions';
+import TableOfShipments from './MainPage/TableOfShipments';
+import SearchTool from './MainPage/SearchTool';
+import Pagination from './MainPage/Pagination';
+import { sortByKey, calculateNewPageNumber, calculateNumberOfPages } from '../helpers/helperFunctions';
 
 const ASC = 'asc';
 const DESC = 'desc';
@@ -32,14 +32,13 @@ class PageWithTable extends React.Component {
     this.calculateShipments = this.calculateShipments.bind(this);
   }
 
-  //functions as response to the events
+  // functions as response to the events
   changePageNumber(operator) {
-    let { numberOfPages } = this.calculateShipments(this.props.shipments);
-    let nextPage = calculateNewPageNumber(operator, this.state.currentPage, numberOfPages);
+    const { numberOfPages } = this.calculateShipments(this.props.shipments);
 
-    this.setState({
-      currentPage: nextPage
-    });
+    this.setState(prevState => ({
+      currentPage: calculateNewPageNumber(operator, prevState.currentPage, numberOfPages),
+    }));
   }
 
   handleSortClick(sortCategory) {
@@ -51,8 +50,8 @@ class PageWithTable extends React.Component {
     }
 
     this.setState({
-      sortCategory: sortCategory,
-      sortDirection: sortDirection
+      sortCategory,
+      sortDirection,
     });
   }
 
@@ -68,9 +67,9 @@ class PageWithTable extends React.Component {
     this.props.changePage(page);
   }
 
-  //functions to influence on displayed shipments
-  sortByField(shipments, sortCategory, sortDirection) {
-    shipments = sortByKey(shipments.slice(), sortCategory);
+  // functions to influence on displayed shipments
+  sortByField(givenShipments, sortCategory, sortDirection) {
+    const shipments = sortByKey(givenShipments.slice(), sortCategory);
 
     if (sortDirection === DESC) {
       shipments.reverse();
@@ -80,15 +79,13 @@ class PageWithTable extends React.Component {
   }
 
   paginate(shipments, page) {
-    let serialNumberOfFirstShipment = SHIPMENTS_PER_PAGE * (page - 1);
+    const serialNumberOfFirstShipment = SHIPMENTS_PER_PAGE * (page - 1);
 
-    return shipments.slice(serialNumberOfFirstShipment, serialNumberOfFirstShipment + SHIPMENTS_PER_PAGE)
+    return shipments.slice(serialNumberOfFirstShipment, serialNumberOfFirstShipment + SHIPMENTS_PER_PAGE);
   }
 
   filterShipments(shipments, searchId) {
-    return shipments.filter(el => {
-      return el.id.substr(0, searchId.length) === searchId;
-    });
+    return shipments.filter(el => el.id.substr(0, searchId.length) === searchId);
   }
 
   deleteShipment(id) {
@@ -96,18 +93,19 @@ class PageWithTable extends React.Component {
   }
 
   // main function to reform displayed shipments
-  calculateShipments(shipments) {
-    shipments = this.filterShipments(shipments, this.state.searchId);
+  calculateShipments(givenShipments) {
+    let shipments = this.filterShipments(givenShipments, this.state.searchId);
+
+
+    const numberOfPages = calculateNumberOfPages(shipments, SHIPMENTS_PER_PAGE);
+
     shipments = this.sortByField(shipments, this.state.sortCategory, this.state.sortDirection);
-
-    let numberOfPages = calculateNumberOfPages(shipments, SHIPMENTS_PER_PAGE);
-
     shipments = this.paginate(shipments, this.state.currentPage);
-    return {shipments, numberOfPages};
+    return { shipments, numberOfPages };
   }
 
   render() {
-    let { shipments, numberOfPages } = this.calculateShipments(this.props.shipments);
+    const { shipments, numberOfPages } = this.calculateShipments(this.props.shipments);
 
     return (
       <Fragment>
@@ -127,33 +125,36 @@ class PageWithTable extends React.Component {
           deleteShipment={this.deleteShipment}
           tableLineComponent={this.props.tableLineComponent}
         />
-        {numberOfPages > 1 &&
+        {numberOfPages > 1
+        && (
         <Pagination
           numberOfPages={numberOfPages}
           currentPage={this.state.currentPage}
           changePageNumber={this.changePageNumber}
         />
+        )
         }
       </Fragment>
     );
   }
 }
 
-PageWithTable = inject("store")(
+PageWithTable = inject('store')(
   observer(
-    PageWithTable
-  )
+    PageWithTable,
+  ),
 );
 
 export default PageWithTable;
 
 PageWithTable.propTypes = {
+  shipments: PropTypes.arrayOf(PropTypes.object),
   changePage: PropTypes.func,
   store: PropTypes.shape({
-    shipments: PropTypes.array,
     setShipments: PropTypes.func,
     setSelectedShipmentId: PropTypes.func,
-    deleteShipment: PropTypes.func
+    deleteShipment: PropTypes.func,
   }),
-  title: PropTypes.string
+  title: PropTypes.string,
+  tableLineComponent: PropTypes.string,
 };

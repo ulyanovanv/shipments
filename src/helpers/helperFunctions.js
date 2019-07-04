@@ -1,21 +1,22 @@
 function sortByKey(array, key) {
-  return array.sort(function(a, b) {
-    let x = a[key];
-    let y = b[key];
-    return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+  return array.sort((a, b) => {
+    const x = a[key];
+    const y = b[key];
+    const secondOutput = (x > y) ? 1 : 0;
+    return (x < y) ? -1 : secondOutput;
   });
 }
 
 function calculateNewPageNumber(operator, currentPage, numberOfPages) {
   let nextPage;
-  if (typeof operator === "number") {
+  if (typeof operator === 'number') {
     nextPage = operator;
-  } else if (typeof operator === "string") {
-    switch(operator) {
-      case "+":
+  } else if (typeof operator === 'string') {
+    switch (operator) {
+      case '+':
         nextPage = currentPage + 1;
         break;
-      case "-":
+      case '-':
         nextPage = currentPage - 1;
         break;
       default:
@@ -35,4 +36,12 @@ function calculateNumberOfPages(shipments = [], shipmentsPerPage) {
   return Math.ceil(shipments.length / shipmentsPerPage);
 }
 
-export { sortByKey, calculateNewPageNumber, calculateNumberOfPages };
+function supportEvent(event, func, page, id) {
+  if (event.keyCode === 13) {
+    func(page, id);
+  }
+}
+
+export {
+  sortByKey, calculateNewPageNumber, calculateNumberOfPages, supportEvent,
+};

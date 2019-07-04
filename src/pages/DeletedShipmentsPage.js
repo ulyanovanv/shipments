@@ -1,42 +1,36 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import {inject, observer} from "mobx-react/index";
+import { inject, observer } from 'mobx-react/index';
 
-import PageWithTable from './../components/PageWithTable';
+import PageWithTable from '../components/PageWithTable';
+import BackButton from '../components/MainPage/BackButton';
 
-class DeletedShipmentsPage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+function DeletedShipmentsPage(props) {
+  const { deletedShipments } = props.store;
 
-  render() {
-    let deletedShipments = this.props.store.deletedShipments;
-
-    if (deletedShipments.length > 0) {
-      return <PageWithTable
-        shipments={deletedShipments}
-        changePage={this.props.changePage}
-        tableLineComponent='LineOfDeletedShipment'
-        title='Deleted shipments'
-      />;
-    }
-
+  if (deletedShipments.length > 0) {
     return (
-      <div className='mt-3'>
-        <h5> No deleted shipments are found.</h5>
-        <div
-          className='btn btn-sm btn-customized mt-3 mb-1'
-          onClick={() => this.props.changePage('all')}
-        >Back to All Shipments</div>
-      </div>
+      <PageWithTable
+        shipments={deletedShipments}
+        changePage={props.changePage}
+        tableLineComponent="LineOfDeletedShipment"
+        title="Deleted shipments"
+      />
     );
   }
+
+  return (
+    <div className="mt-3">
+      <h5> No deleted shipments are found.</h5>
+      <BackButton changePage={props.changePage} />
+    </div>
+  );
 }
 
-DeletedShipmentsPage = inject("store")(
+DeletedShipmentsPage = inject('store')(
   observer(
-    DeletedShipmentsPage
-  )
+    DeletedShipmentsPage,
+  ),
 );
 
 export default DeletedShipmentsPage;
@@ -44,6 +38,6 @@ export default DeletedShipmentsPage;
 DeletedShipmentsPage.propTypes = {
   changePage: PropTypes.func,
   store: PropTypes.shape({
-    deletedShipments: PropTypes.array
-  })
+    deletedShipments: PropTypes.array,
+  }),
 };

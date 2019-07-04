@@ -1,31 +1,29 @@
-import { observable, action, decorate } from "mobx";
+import { observable, action, decorate } from 'mobx';
 
 class ShipmentsStore {
   shipments = [];
-  shipmentDetailsId = "";
+
+  shipmentDetailsId = '';
+
   deletedShipments = [];
 
   modifyShipments(shipmentId, key, value) {
     if (!value) return;
 
     const findObj = obj => obj.id === shipmentId;
-    let shipmentBeforeChange = this.shipments.find(findObj);
-    let shipmentIndex = this.shipments.findIndex(findObj);
-    let shipmentAfterChange = Object.assign({}, shipmentBeforeChange, {[key]: value});
+    const shipmentBeforeChange = this.shipments.find(findObj);
+    const shipmentIndex = this.shipments.findIndex(findObj);
+    const shipmentAfterChange = Object.assign({}, shipmentBeforeChange, { [key]: value });
 
     this.shipments[shipmentIndex] = shipmentAfterChange;
   }
 
   deleteShipment(shipmentId) {
-    let shipments = this.shipments.slice();
+    const shipments = this.shipments.slice();
 
-    let deletedShipment = shipments.find(el => {
-      return el.id === shipmentId;
-    });
+    const deletedShipment = shipments.find(el => el.id === shipmentId);
 
-    let filteredShipments = shipments.filter(el => {
-      return el.id !== shipmentId;
-    });
+    const filteredShipments = shipments.filter(el => el.id !== shipmentId);
 
     this.shipments = filteredShipments;
     this.deletedShipments.push(deletedShipment);

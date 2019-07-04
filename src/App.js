@@ -4,7 +4,7 @@ import './App.scss';
 import MainPage from './pages/MainPage';
 import ShipmentPage from './pages/ShipmentPage';
 import DeletedShipmentsPage from './pages/DeletedShipmentsPage';
-import SidebarMenu from "./components/SidebarMenu";
+import SidebarMenu from './components/SidebarMenu';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -12,7 +12,7 @@ export default class App extends React.Component {
 
     this.state = {
       activeNavBar: 'all',
-      openPage: 'all'
+      openPage: 'all',
     };
 
     this.changePage = this.changePage.bind(this);
@@ -21,7 +21,7 @@ export default class App extends React.Component {
   changePage(page) {
     this.setState({
       openPage: page,
-      activeNavBar: page === 'shipment' ? 'all' : page
+      activeNavBar: page === 'shipment' ? 'all' : page,
     });
   }
 
@@ -33,16 +33,22 @@ export default class App extends React.Component {
             active={this.state.activeNavBar}
             changePage={this.changePage}
           />
-          <div className="col-md-9 App_main-page">
-            {this.state.openPage === 'all' && <MainPage
+          <div className="col-md-10 App_main-page">
+            {this.state.openPage === 'all' && (
+            <MainPage
               changePage={this.changePage}
-            />}
-            {this.state.openPage === 'shipment' && <ShipmentPage
+            />
+            )}
+            {this.state.openPage === 'shipment' && (
+            <ShipmentPage
               changePage={this.changePage}
-            />}
-            {this.state.openPage === 'deleted' && <DeletedShipmentsPage
+            />
+            )}
+            {this.state.openPage === 'deleted' && (
+            <DeletedShipmentsPage
               changePage={this.changePage}
-            />}
+            />
+            )}
           </div>
         </div>
       </div>

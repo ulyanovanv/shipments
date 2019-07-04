@@ -1,7 +1,7 @@
 import React from 'react';
 import shortid from 'shortid';
 import PropTypes from 'prop-types';
-import {inject, observer} from "mobx-react/index";
+import { inject, observer } from 'mobx-react/index';
 
 import LineOfShipment from './LineOfShipment';
 import LineOfDeletedShipment from './LineOfDeletedShipment';
@@ -15,20 +15,17 @@ class TableOfShipments extends React.Component {
   }
 
   renderShipments() {
-    let tableLineComponent =
-      this.props.tableLineComponent === 'LineOfShipment' ? LineOfShipment : LineOfDeletedShipment;
+    const tableLineComponent = this.props.tableLineComponent === 'LineOfShipment' ? LineOfShipment : LineOfDeletedShipment;
 
-    return this.props.shipments.map(el => {
-      return React.createElement(
-          tableLineComponent,
-          {
-            info: el,
-            key: shortid.generate(),
-            goToShipmentPage: this.props.goToShipmentPage,
-            deleteShipment: this.props.deleteShipment
-          }
-      );
-    });
+    return this.props.shipments.map(el => React.createElement(
+      tableLineComponent,
+      {
+        info: el,
+        key: shortid.generate(),
+        goToShipmentPage: this.props.goToShipmentPage,
+        deleteShipment: this.props.deleteShipment,
+      },
+    ));
   }
 
   render() {
@@ -49,19 +46,20 @@ class TableOfShipments extends React.Component {
   }
 }
 
-TableOfShipments = inject("store")(
+TableOfShipments = inject('store')(
   observer(
-    TableOfShipments
-  )
+    TableOfShipments,
+  ),
 );
 
 export default TableOfShipments;
 
 TableOfShipments.propTypes = {
-  shipments: PropTypes.array,
+  tableLineComponent: PropTypes.string,
+  shipments: PropTypes.arrayOf(PropTypes.object),
   handleSortClick: PropTypes.func,
-  changePage: PropTypes.func,
   deleteShipment: PropTypes.func,
   sortCategory: PropTypes.string,
-  sortDirection: PropTypes.string
+  sortDirection: PropTypes.string,
+  goToShipmentPage: PropTypes.func,
 };
