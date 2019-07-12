@@ -29,7 +29,7 @@ class ShipmentDetails extends React.Component {
   submitFormForNewShipmentValue(event) {
     event.preventDefault();
     this.props.store.modifyShipments(
-      this.findCurrentShipmentInArray().id,
+      this.props.store.findCurrentShipment.id,
       this.state.key,
       this.state.newValueForShipmentUpdate,
     );
@@ -40,10 +40,6 @@ class ShipmentDetails extends React.Component {
     });
   }
 
-  findCurrentShipmentInArray() {
-    return this.props.store.shipments.find(obj => obj.id === this.props.store.shipmentDetailsId);
-  }
-
   render() {
     const arrayOfInfo = [];
     const { shipmentDetails } = this.props;
@@ -51,15 +47,15 @@ class ShipmentDetails extends React.Component {
     const entries = Object.entries(shipmentDetails);
 
     for (let i = 0; i < entries.length; i += 1) {
-      // console.log(entries[i][0]);
-      // console.log(this.state.key);
+      const [name, info] = entries[i];
+
       arrayOfInfo.push(
         <Shipment
-          key={entries[i][0]}
-          keyValue={entries[i][0]}
-          shouldFormBeShown={entries[i][0] === this.state.key}
+          key={name}
+          keyValue={name}
+          shouldFormBeShown={name === this.state.key}
           newValueForShipmentUpdate={this.state.newValueForShipmentUpdate}
-          shipmentValue={entries[i][1]}
+          shipmentValue={info}
           showFormForValueChange={this.showFormForValueChange}
           updateShipmentValue={this.updateShipmentValue}
           submitFormForNewShipmentValue={this.submitFormForNewShipmentValue}
@@ -97,5 +93,6 @@ ShipmentDetails.propTypes = {
     shipments: PropTypes.arrayOf(PropTypes.object),
     shipmentDetailsId: PropTypes.string,
     modifyShipments: PropTypes.func,
+    findCurrentShipment: PropTypes.object,
   }),
 };

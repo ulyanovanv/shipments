@@ -14,14 +14,14 @@ export default class Shipment extends React.Component {
 
   prepairShipmentsValuesForRender(shipmentValue) {
     return shipmentValue.map((infoPiece, index) => {
+      const entries = Object.entries(infoPiece);
       const shipmentValueDetails = [];
 
-      const entries = Object.entries(infoPiece);
-
       for (let i = 0; i < entries.length; i += 1) {
+        const [key, value] = entries[i];
         shipmentValueDetails.push(
-          <span key={entries[i][0]}>
-            {`${entries[i][0]} - ${entries[i][1]}`}
+          <span key={key}>
+            {`${key} - ${value}`}
             {i + 1 < entries.length ? ', ' : ''}
           </span>,
         );
@@ -40,14 +40,16 @@ export default class Shipment extends React.Component {
     });
   }
 
-  showFormForValueChange(keyValue) { // TODO: fix
-    // console.log(keyValue);
+  showFormForValueChange(keyValue) {
     this.props.showFormForValueChange(keyValue);
   }
 
   render() {
-    const { props } = this;
-    let { shipmentValue } = props;
+    const {
+      keyValue, shouldFormBeShown, updateShipmentValue, submitFormForNewShipmentValue, newValueForShipmentUpdate,
+    } = this.props;
+
+    let { shipmentValue } = this.props;
 
     if (typeof shipmentValue === 'object') {
       shipmentValue = this.prepairShipmentsValuesForRender(shipmentValue);
@@ -56,17 +58,20 @@ export default class Shipment extends React.Component {
     return (
       <div className="d-flex flex-row mb-1">
         <div className="App_shipment-details_key px-1">
-          {props.keyValue}
+          {keyValue}
         </div>
 
         <div className="App_shipment-details_value px-1">
-          {!props.shouldFormBeShown && shipmentValue}
+          {!shouldFormBeShown && shipmentValue}
 
-          {(!props.shouldFormBeShown && props.keyValue !== 'id') && (
+          {(!shouldFormBeShown && keyValue !== 'id') && (
           <div
             className="float-right pencil"
-            onClick={() => this.showFormForValueChange(props.keyValue)}
-            onKeyDown={event => supportEvent(event, this.showFormForValueChange, props.keyValue)} // TODO: fix
+            onClick={() => this.showFormForValueChange(keyValue)}
+            onKeyUp={(event) => {
+              supportEvent(event, this.showFormForValueChange, keyValue);
+              event.stopPropagation();
+            }}
             tabIndex="0"
             role="button"
           >
@@ -74,13 +79,12 @@ export default class Shipment extends React.Component {
           </div>
           )}
 
-          {props.shouldFormBeShown && (
+          {shouldFormBeShown && (
           <FormToChangeShipmentValue
-            newValueForShipmentUpdate={props.newValueForShipmentUpdate}
-            keyValue={props.keyValue}
-            updateShipmentValue={props.updateShipmentValue}
-            submitFormForNewShipmentValue={props.submitFormForNewShipmentValue}
-            shipmentValue={shipmentValue}
+            newValueForShipmentUpdate={newValueForShipmentUpdate}
+            keyValue={keyValue}
+            updateShipmentValue={updateShipmentValue}
+            submitFormForNewShipmentValue={submitFormForNewShipmentValue}
           />
           )}
         </div>

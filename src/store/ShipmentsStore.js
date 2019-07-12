@@ -1,4 +1,6 @@
-import { observable, action, decorate } from 'mobx';
+import {
+  observable, action, computed, decorate,
+} from 'mobx';
 
 class ShipmentsStore {
   shipments = [];
@@ -31,6 +33,10 @@ class ShipmentsStore {
     return filteredShipments;
   }
 
+  get findCurrentShipment() {
+    return this.shipments.find(obj => obj.id === this.shipmentDetailsId);
+  }
+
   setShipments(shipments) {
     this.shipments = shipments;
   }
@@ -48,6 +54,7 @@ decorate(ShipmentsStore, {
   deleteShipment: action,
   setShipments: action,
   setSelectedShipmentId: action,
+  findCurrentShipment: computed,
 });
 
 export default ShipmentsStore;

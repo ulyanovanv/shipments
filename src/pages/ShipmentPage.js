@@ -5,29 +5,23 @@ import { inject, observer } from 'mobx-react/index';
 import ShipmentDetails from '../components/ShipmentPage/ShipmentDetails';
 import BackButton from '../components/MainPage/BackButton';
 
-class ShipmentPage extends React.Component {
-  findCurrentShipmentInArray() {
-    return this.props.store.shipments.find(obj => obj.id === this.props.store.shipmentDetailsId);
-  }
+function ShipmentPage(props) {
+  const shipmentDetails = props.store.findCurrentShipment;
 
-  render() {
-    const shipmentDetails = this.findCurrentShipmentInArray();
-
-    return (
-      <Fragment>
-        <h5 className="my-3">
-          Details of the shipment
-          {' '}
-          <b>{shipmentDetails.id}</b>
+  return (
+    <Fragment>
+      <h5 className="my-3">
+        Details of the shipment
+        {' '}
+        <b>{shipmentDetails.id}</b>
 .
-        </h5>
-        <ShipmentDetails
-          shipmentDetails={shipmentDetails}
-        />
-        <BackButton changePage={this.props.changePage} />
-      </Fragment>
-    );
-  }
+      </h5>
+      <ShipmentDetails
+        shipmentDetails={shipmentDetails}
+      />
+      <BackButton changePage={props.changePage} />
+    </Fragment>
+  );
 }
 
 ShipmentPage = inject('store')(
@@ -43,5 +37,6 @@ ShipmentPage.propTypes = {
   store: PropTypes.shape({
     shipments: PropTypes.array,
     shipmentDetailsId: PropTypes.string,
+    findCurrentShipment: PropTypes.object,
   }),
 };
